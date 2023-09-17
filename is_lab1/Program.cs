@@ -10,13 +10,23 @@ namespace is_lab1
     {
         static void Main(string[] args)
         {
-            /*int i = 0;*/
-            /*Console.CancelKeyPress += delegate {
-                Environment.Exit(1);
-            };*/
-
             CsvManipulator CsvReader = new CsvManipulator();
             ConsoleKey choice;
+
+            Console.WriteLine("Читаем конфиг-файл...\n");
+            //Тут должен читаться конфиг и быть отдельная менюшка в зависимости от успешности прочтения
+            if (CsvReader.ConfigRead())
+            {
+                Console.WriteLine("Название csv-файла для чтения: {0}", CsvReader.CsvConfig.CsvName);
+                Console.WriteLine("CSV имеет заголовок? (для игнорирования первой строки если это не запись)\n{0}", CsvReader.CsvConfig.HasHeader);
+                Console.WriteLine("Заголовочное поле: \n{0}\n", CsvReader.CsvConfig.DataHeaders.Replace(',', ' '));
+                Console.WriteLine("Возможен ли null? (1 - да, 0 - нет): \n{0}\n", CsvReader.CsvConfig.DataNullables.Replace(',', ' '));
+                Console.WriteLine("Типы данных: \n{0}\n", CsvReader.CsvConfig.DataTypes.Replace(',', ' '));
+                Console.WriteLine("Для типов данных:\n1 - str, \n2 - int, \n3 - bool, \n4 - byte\n");
+            }
+            else
+                Console.WriteLine("Ошибка чтения конфиг-файла!");
+            
 
             while (true)
             {
@@ -24,29 +34,29 @@ namespace is_lab1
                 Console.WriteLine("Нажмите 1 - посмотреть записи в файле");
                 Console.WriteLine("Нажмите 2 - вывести запись по номеру");
                 Console.WriteLine("Нажмите 3 - создать новую запись");
-                Console.WriteLine("Нажмите 4 - удалить записи из файла");
+                Console.WriteLine("Нажмите 4 - удалить записи из файла(все неподходящие по формату будут так же удалены!)");
+                Console.WriteLine("Нажмите 5 - посмотреть файл конфигурации");
                 Console.WriteLine("Нажмите Esc для выхода");
                 Console.WriteLine();
                 choice = Console.ReadKey(true).Key;
                 switch (choice)
                 {
-/*                    case 0:
-                        {
-                            Console.WriteLine("Добро пожаловать в основное меню!");
-                            Console.WriteLine("Нажмите 1 - посмотреть записи в файле");
-                            Console.WriteLine("Нажмите 2 - вывести запись по номеру");
-                            Console.WriteLine("Нажмите 3 - создать новую запись");
-                            Console.WriteLine("Нажмите 4 - удалить записи из файла");
-                            Console.WriteLine("Нажмите Esc для выхода");
-                            if (!Int32.TryParse(Console.ReadLine(), out i))
-                                i = -2;
-                            Console.WriteLine();
-                            break;
-                        }*/
                     case ConsoleKey.D1:
                         {
                             CsvReader.CsvReadValue();
-                            /*i = 0;*/
+
+                            if (CsvReader.CsvConfig.HasHeader == "true")
+                            {
+                                Console.WriteLine(CsvReader.csvHeader.Replace(',', ' '));
+                            }
+                            Console.WriteLine("----------------------------");
+                            int i = 1;
+                            foreach (CsvRecord _record in CsvReader.Records)
+                            {
+                                Console.WriteLine("{0}. {1}", i, string.Join(" " , _record.Records));
+                                i++;
+                            }
+                            Console.WriteLine("----------------------------");
                             Console.WriteLine();
                             break;
                         }
@@ -55,16 +65,14 @@ namespace is_lab1
                             Console.WriteLine("Введите номер/номера(через пробелы или запятые) записи:");
                             string newData = Console.ReadLine();
                             CsvReader.CsvReadByNumber(newData);
-                            /*i = 0;*/
                             Console.WriteLine();
                             break;
                         }
                     case ConsoleKey.D3:
                         {
-                            Console.WriteLine("Введите данные, содержащиеся в новой записи через пробел или запятую(str,str,byte,bool):");
+                            Console.WriteLine("Введите данные, содержащиеся в новой записи через пробел или запятую:");
                             string newData = Console.ReadLine();
                             CsvReader.CsvWriteValue(newData);
-                            /*i = 0;*/
                             Console.WriteLine();
                             break;
                         }
@@ -73,7 +81,22 @@ namespace is_lab1
                             Console.WriteLine("Введите номер/номера(через пробелы или запятые) записи для удаления:");
                             string newData = Console.ReadLine();
                             CsvReader.CsvDeleteByNumber(newData);
-                            /*i = 0;*/
+                            Console.WriteLine();
+                            break;
+                        }
+                    case ConsoleKey.D5:
+                        {
+                            if (CsvReader.ConfigRead())
+                            {
+                                Console.WriteLine("Название csv-файла для чтения: {0}", CsvReader.CsvConfig.CsvName);
+                                Console.WriteLine("CSV имеет заголовок? (для игнорирования первой строки если это не запись)\n{0}", CsvReader.CsvConfig.HasHeader);
+                                Console.WriteLine("Заголовочное поле: \n{0}\n", CsvReader.CsvConfig.DataHeaders.Replace(',', ' '));
+                                Console.WriteLine("Возможен ли null? (1 - да, 0 - нет): \n{0}\n", CsvReader.CsvConfig.DataNullables.Replace(',', ' '));
+                                Console.WriteLine("Типы данных: \n{0}\n", CsvReader.CsvConfig.DataTypes.Replace(',', ' '));
+                                Console.WriteLine("Для типов данных:\n1 - str, \n2 - int, \n3 - bool, \n4 - byte");
+                            }
+                            else
+                                Console.WriteLine("Ошибка чтения конфиг-файла!");
                             Console.WriteLine();
                             break;
                         }
@@ -85,7 +108,6 @@ namespace is_lab1
                     default:
                         {
                             Console.WriteLine("\aОшибка ввода! Попробуйте снова.");
-                            /*i = 0;*/
                             Console.WriteLine();
                             break;
                         }
