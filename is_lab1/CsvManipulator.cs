@@ -48,20 +48,21 @@ namespace is_lab1
 
 
         //Запись нового значения
-        public void CsvWriteValue(string input)
+        public bool CsvWriteValue(string input)
         {
-            char[] delimiters = {',', ' ', ';'};
+            //char[] delimiters = {',', ' ', ';'};
             CsvRecord _record = new CsvRecord();
 
             //Запись в файл, если все значения заданы правильно
             if (!(_record.CsvRecordInput(input, csvConfig.DataTypes, csvConfig.DataNullables)))
-                Console.WriteLine("\aНекорректный ввод! Данные не будут записаны.");
+                return false;
             else
             {
                 using (StreamWriter sw = new StreamWriter(Path, true, Encoding.UTF8))
                 {
                     sw.WriteLine(input.Replace(' ', ',').Replace(';', ','));
                 }
+                return true;
             } 
         }
 
@@ -97,7 +98,7 @@ namespace is_lab1
         }
 
         //Чтение по номеру/номерам
-        public void CsvReadByNumber(string input)
+        public List<int> CsvReadByNumber(string input)
         {
             char[] delimiters = { ',', ' ', ';' };
             string[] values = input.Split(delimiters);
@@ -117,33 +118,22 @@ namespace is_lab1
                 }
             }
 
-            Console.WriteLine("\n----------------------------");
-            foreach (int _int_ in lineNums)
-            {
-                try
-                {
-                    Console.WriteLine("{0}. {1}", _int_, string.Join(" ", Records[_int_].Records));
-                }
-                catch //(Exception e)
-                {
-                    //Console.WriteLine("Ошибка при выводе строки: "+e.Message);
-                }
-            }
-            Console.WriteLine("----------------------------");
+            return lineNums;
         }
 
         //Удаление по номеру/номерам
-        public void CsvDeleteByNumber(string input)
+        public List<string> CsvDeleteByNumber(string input)
         {
             char[] delimiters = { ',', ' ', ';' };
             string[] values = input.Split(delimiters);
             //Hash set - список, который позволяет добавлять только уникальные значения
             HashSet<int> uniqueLineNums = new HashSet<int>();
+            List<string> deletedRecords = new List<string>();
 
             foreach (string v in values)
             {
                 if (!Int32.TryParse(v, out int lineToRead))
-                    Console.WriteLine("Некорректный ввод \"{0}\"! Ввод должен содержать число. Значение пропущено.", v);
+                    { }//Console.WriteLine("Некорректный ввод \"{0}\"! Ввод должен содержать число. Значение пропущено.", v);
                 else if (lineToRead <= Records.Count() && lineToRead > 0)
                 {
                     uniqueLineNums.Add(lineToRead);
@@ -155,7 +145,8 @@ namespace is_lab1
             var sortedUnique = uniqueLineNums.OrderByDescending(i => i);
             foreach (int num in sortedUnique)
             {
-                Console.WriteLine("Удалено: {0}. {1}", num, string.Join(" ", Records[num - 1].Records));
+                //Console.WriteLine("Удалено: {0}. {1}", num, string.Join(" ", Records[num - 1].Records));
+                deletedRecords.Add(string.Join(" ", Records[num - 1].Records));
                 Records.RemoveAt(num-1);
             }
 
@@ -167,6 +158,7 @@ namespace is_lab1
                     sw.WriteLine(string.Join(",", _record.Records));
                 }
             }
+            return deletedRecords;
         }
     }
 }

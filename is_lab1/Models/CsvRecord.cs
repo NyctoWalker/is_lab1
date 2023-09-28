@@ -36,9 +36,9 @@ namespace is_lab1
                 nullables.Count()
             };
 
-            bool debug1 = equalityList.Distinct().Skip(1).Any();
-            bool debug2 = CsvRecordValidateBools(nullables);
-            bool debug3 = CsvRecordValidateDataTypes(types);
+            //bool debug1 = equalityList.Distinct().Skip(1).Any();
+            //bool debug2 = CsvRecordValidateBools(nullables);
+            //bool debug3 = CsvRecordValidateDataTypes(types);
 
             //Проверка на то что каждой записи соответствует параметр
             if (equalityList.Distinct().Skip(1).Any() || //Отличается ли длина массивов с элементами

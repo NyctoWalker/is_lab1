@@ -1,4 +1,4 @@
-﻿FirstName,LastName,Age,HasDrivingLicense,LID
+﻿FirstName(str),LastName(str),Age(byte),HasDrivingLicense(bool),LID(int)
 Jack,Fifth,18,false,909
 Alexander,Petrov,61,true,901
 John,Sena,37,false,807
@@ -9,3 +9,5 @@ Gleb,Various,19,false,665
 Jennifer,Angle,91,false,380
 Mister,Demonstrative,101,true,945
 Gentleman,Tenth,null,null,971
+Mark,Twelve,null,t,190
+Jack,Yellow,90,null,512
