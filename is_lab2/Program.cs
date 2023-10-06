@@ -10,7 +10,8 @@ namespace is_lab2
     class Program
     {
         public static UdpClient udpClient;
-        private static readonly int serverPort = 11041;
+        //private static readonly int serverPort = 11041; //lab1
+        private static readonly int serverPort = 11043; //lab3
         private static readonly int clientPort = 11042;
 
         static async Task Main()
@@ -19,10 +20,10 @@ namespace is_lab2
             udpClient = new UdpClient(clientPort);
             Console.OutputEncoding = Encoding.Unicode;
             Console.WriteLine("Клиент запущен.");
-            Console.WriteLine("Введите 1 - посмотреть записи в файле");
+            Console.WriteLine("Введите 1 - посмотреть все записи");
             Console.WriteLine("Введите 2 - вывести записи по номерам");
             Console.WriteLine("Введите 3 - создать новую запись");
-            Console.WriteLine("Введите 4 - удалить записи из файла по номерам(все неподходящие по формату будут так же удалены!)");
+            Console.WriteLine("Введите 4 - удалить записи по номерам");
             Console.WriteLine();
             //ConsoleKey choice = Console.ReadKey(true).Key;
 

@@ -19,7 +19,7 @@ namespace is_lab1
         private static readonly int serverPort = 11041;
         private static readonly int clientPort = 11042;
         private static readonly IPAddress localAddress = IPAddress.Parse("127.0.0.1");
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         static void Main()
         {
