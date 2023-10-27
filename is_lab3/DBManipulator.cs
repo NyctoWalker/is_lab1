@@ -111,7 +111,7 @@ namespace is_lab3
 
                 using (is_archContext db = new())
                 {
-                    PersonLicense p = new PersonLicense
+                    PersonLicense p = new()
                     {
                         FirstName = fName,
                         LastName = lName,
