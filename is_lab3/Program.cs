@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using is_lab3.Models;
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace is_lab3
 {
@@ -15,7 +17,8 @@ namespace is_lab3
 
         public static UdpClient udpServer2;
         private static readonly int serverPort = 11043;
-        private static readonly int clientPort = 11042;
+        //private static readonly int clientPort = 11042;
+        private static readonly int clientPort = 11044;
         private static readonly IPAddress localAddress = IPAddress.Parse("127.0.0.1");
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -77,27 +80,20 @@ namespace is_lab3
                         {
                             case '1':
                                 {
-                                    ServerSendMessage("Идёт обращение к базе данных. Пожалуйста, подождите...");
-                                    ServerSendMessage("FirstName LastName Age HasDrivingLicense CargoLicenseID");
-                                    ServerSendMessage("----------------------------");
-                                    foreach (string msg in DBReader.GetDBValues())
+                                    //ServerSendMessage("Идёт обращение к базе данных. Пожалуйста, подождите...");
+                                    //ServerSendMessage("FirstName LastName Age HasDrivingLicense CargoLicenseID");
+                                    //ServerSendMessage("----------------------------");
+                                    List<string> dbValues = DBReader.GetDBValues();
+                                    ServerSendMessage(dbValues.Count.ToString());
+
+                                    foreach (string msg in dbValues)
                                         ServerSendMessage(msg);
-                                    ServerSendMessage("----------------------------\n");
+                                    //ServerSendMessage("----------------------------\n");
 
                                     break;
                                 }
 
                             case '2':
-                                newData = message[4..];
-                                ServerSendMessage("Идёт обращение к базе данных. Пожалуйста, подождите...");
-                                ServerSendMessage("----------------------------");
-                                foreach (string msg in DBReader.GetDBValuesByNumber(newData))
-                                    ServerSendMessage(msg);
-                                ServerSendMessage("----------------------------\n");
-
-                                break;
-
-                            case '3':
                                 newData = message[4..];
 
                                 if (DBReader.DBAddNew(newData))
@@ -107,12 +103,21 @@ namespace is_lab3
 
                                 break;
 
-                            case '4':
+                            case '3':
                                 newData = message[4..];
-                                
-                                foreach (string msg in DBReader.DeleteDBValuesByNumber(newData))
+
+                                DBReader.DeleteValueByID(newData);
+                                /*foreach (string msg in DBReader.DeleteDBValuesByNumber(newData))
                                     ServerSendMessage(msg);
-                                Console.WriteLine();
+                                Console.WriteLine();*/
+
+                                break;
+
+                            case '4':
+                                string serializedPeople = message[4..];
+
+                                List<PersonLicense> people = JsonConvert.DeserializeObject<List<PersonLicense>>(serializedPeople);
+                                DBReader.UpdateDB(people);
 
                                 break;
 

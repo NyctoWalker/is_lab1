@@ -19,12 +19,7 @@ namespace is_lab3
                 var people = db.PersonLicenses;
                 foreach (PersonLicense p in people)
                 {
-                    string msg = i.ToString() + ". "
-                        + p.FirstName + " "
-                        + p.LastName + " "
-                        + p.Age + " "
-                        + p.HasDrivingLicense + " "
-                        + p.IdCargoLicense;
+                    string msg = $"{p.FirstName} {p.LastName} {p.Age} {p.HasDrivingLicense} {p.IdCargoLicense}";
                     output.Add(msg);
                     //ServerSendMessage(msg);
                     i++;
@@ -96,6 +91,61 @@ namespace is_lab3
             }
 
             return output;
+        }
+
+        public void DeleteValueByID(string input)
+        {
+            int id;
+            if (!Int32.TryParse(input, out id))
+                return;
+            else
+            {
+                using (is_archContext db = new())
+                {
+                    PersonLicense personToDelete = db.PersonLicenses.Find(id);
+                    db.Remove(personToDelete);
+                    db.SaveChanges();
+                }
+            }    
+        }
+
+        public void UpdateDB(List<PersonLicense> people)
+        {
+            using (is_archContext db = new())
+            {
+                var existingPeople = db.PersonLicenses.ToList();
+
+                // Удаление людей которых нет в списке
+                foreach (PersonLicense person in existingPeople)
+                {
+                    if (!people.Any(p => p.IdCargoLicense == person.IdCargoLicense))
+                    {
+                        db.PersonLicenses.Remove(person);
+                    }
+                }
+
+                // Обновить существующих и вставить новых
+                foreach (PersonLicense person in people)
+                {
+                    PersonLicense existingPerson = existingPeople.FirstOrDefault(p => p.IdCargoLicense == person.IdCargoLicense);
+                    if (existingPerson != null)
+                    {
+                        // Обновление
+                        existingPerson.FirstName = person.FirstName;
+                        existingPerson.LastName = person.LastName;
+                        existingPerson.Age = person.Age;
+                        existingPerson.HasDrivingLicense = person.HasDrivingLicense;
+                        existingPerson.IdCargoLicense = person.IdCargoLicense;
+                    }
+                    else
+                    {
+                        // Вставка
+                        db.PersonLicenses.Add(person);
+                    }
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public bool DBAddNew(string input)
