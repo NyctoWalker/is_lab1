@@ -1,0 +1,23 @@
+﻿<Window x:Class="is_lab5.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:local="clr-namespace:is_lab5" d:DataContext="{d:DesignInstance Type=local:AppVM}"
+        mc:Ignorable="d"
+        Title="Lab5" Height="450" Width="800">
+    <Grid>
+        <!--<WebBrowser x:Name="webBrowser" Height="300" Margin="10,43,0,0" VerticalAlignment="Top" Width="500" Navigated="webBrowser_Navigated"/>-->
+        <StackPanel>
+            <cefSharp:ChromiumWebBrowser Name="wb" Margin="30,10,30,0" Height="350" Width="500"/>
+            <Button x:Name="authorizeButton" Content="Авторизоваться" Margin="10,10,0,0" Width="100" Height="20" Command="{Binding AuthCommand}" Visibility="{Binding AuthBV}"/>
+        </StackPanel>
+
+        <DockPanel HorizontalAlignment="Center" Visibility="{Binding MethodsBV}">
+            <Button x:Name="profileInfoButton" Content="Информация о профиле" Margin="10,10,0,0" Width="150" Height="20" Command="{Binding ShowProfileInfoCommand}"/>
+            <Button x:Name="groupsInfoButton" Content="Информация о группах" Margin="10,10,0,0" Width="150" Height="20" Command="{Binding ShowGroupsInfoCommand}"/>
+            <Button x:Name="uniListButton" Content="Университеты города" Margin="10,10,0,0" Width="150" Height="20" Command="{Binding ShowCityUniCommand}"/>
+        </DockPanel>
+    </Grid>
+</Window>
