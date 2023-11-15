@@ -46,7 +46,7 @@ namespace is_lab6
 
                         while (true)
                         {
-                            Console.WriteLine("Хотите добавить этот предмет в БД? (Y/N");
+                            Console.WriteLine("Хотите добавить этот предмет в БД? (Y/N)");
                             string input = Console.ReadLine();
                             if (input.ToLower() == "y")
                             {

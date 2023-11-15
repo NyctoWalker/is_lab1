@@ -39,13 +39,15 @@ namespace is_lab6
             }
 
             var title = driver.FindElement(By.XPath("/html/body/div[2]/main/div[2]/div/form/div[2]/h1"));
-            var stats = driver.FindElements(By.XPath("/html/body/div[2]/main/div[2]/div/form/div[8]/div[2]/div[2]/div")).Take(5);
+            var stats = driver.FindElements(By.XPath("/html/body/div[2]/main/div[2]/div/form/div[8]/div[2]/div[2]/div")).Take(10);
             var price = driver.FindElement(By.ClassName("product__price-cur"));
 
             string priceNumber = Regex.Replace(price.Text, @"\D", "");
 
             output.Add(title.Text);
             output.Add(priceNumber);
+
+
             foreach (var stat in stats)
             {
                 var name = stat.FindElement(By.ClassName("product__property-name")).Text;

@@ -16,8 +16,4 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="119.0.6045.10500" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
