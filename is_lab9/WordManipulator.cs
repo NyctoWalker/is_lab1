@@ -70,7 +70,7 @@ namespace is_lab9
 
                         if (insertValues[i] == "")
                             insertValues[i] = defaultVals[i];
-                        insertValues[i] = CleanInvalidXmlChars(insertValues[i]);
+                        //insertValues[i] = CleanInvalidXmlChars(insertValues[i]);
 
                         Run newRun = new Run(new Text($"{insertValues[i]}"));
                         bookmarkStart.Parent.InsertAfter(newRun, bookmarkStart);

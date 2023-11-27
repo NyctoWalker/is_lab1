@@ -32,6 +32,7 @@ namespace is_lab9
             Workbook workbook = new Workbook();
             // Создание книги и листа
             Worksheet worksheet = workbook.Worksheets[0];
+            worksheet.Name = "Как-нибудь";
 
             if (!isBankPerc)
                 ExcelGraph(worksheet, num, flt);
